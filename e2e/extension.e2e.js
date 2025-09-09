@@ -52,6 +52,19 @@ const fs = require('fs');
     console.log('[debug] #qr innerHTML (first 300):', html.slice(0, 300));
     throw new Error('QR element not found');
   }
+
+  // Test: download PNG
+  const downloadsDir = require('path').join(process.cwd(), 'e2e', 'artifacts');
+  require('fs').mkdirSync(downloadsDir, { recursive: true });
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('#download').click(),
+  ]);
+  const target = require('path').join(downloadsDir, await download.suggestedFilename());
+  await download.saveAs(target);
+  const size = require('fs').statSync(target).size;
+  if (size < 1000) throw new Error('Downloaded PNG seems too small');
+  console.log('[ok] Downloaded PNG:', target, size, 'bytes');
   console.log('[ok] Extension popup rendered with ID', extId);
   await context.close();
 })();

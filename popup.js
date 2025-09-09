@@ -6,6 +6,7 @@ const $ = (s) => document.querySelector(s);
 const qrBox = $('#qr');
 const urlInput = $('#url');
 const copyBtn = $('#copy');
+const downloadBtn = $('#download');
 
 async function getActiveTabUrl() {
   // Test hook: if ?u=<url> is provided, prefer it (works in chrome-extension://, http(s) and file://)
@@ -57,6 +58,30 @@ copyBtn.addEventListener('click', async () => {
   } catch (e) {
     copyBtn.textContent = 'Copy failed';
     setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
+  }
+});
+
+downloadBtn.addEventListener('click', async () => {
+  try {
+    // Prefer the generated <img>, fall back to canvas
+    const img = qrBox.querySelector('img');
+    let dataUrl = '';
+    if (img && img.src.startsWith('data:image')) {
+      dataUrl = img.src;
+    } else {
+      const canvas = qrBox.querySelector('canvas');
+      if (canvas && canvas.toDataURL) dataUrl = canvas.toDataURL('image/png');
+    }
+    if (!dataUrl) throw new Error('QR image not ready');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    a.download = `qr-${ts}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (e) {
+    console.error('Download failed', e);
   }
 });
 
