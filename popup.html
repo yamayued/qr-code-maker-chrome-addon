@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR for Current Page</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 12px; width: 320px; }
+      h1 { font-size: 16px; margin: 0 0 8px; }
+      #qr { display: grid; place-items: center; width: 260px; height: 260px; border: 1px solid #e3e3e3; border-radius: 8px; background: #fff; }
+      .row { display: flex; gap: 8px; margin-top: 10px; }
+      input[type=text] { flex: 1 1 auto; padding: 6px 8px; font-size: 12px; border: 1px solid #ccc; border-radius: 6px; }
+      button { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
+      button:hover { background: #eef1f5; }
+      footer { color: #667; font-size: 11px; margin-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>QR for Current Page</h1>
+    <div id="qr" aria-live="polite" aria-busy="true"></div>
+    <div class="row">
+      <input id="url" type="text" readonly />
+      <button id="copy">Copy</button>
+    </div>
+    <footer>
+      Tip: Show this on your phone by scanning the code.
+    </footer>
+
+    <script src="vendor/qrcode.min.js"></script>
+    <script src="popup.js" type="module"></script>
+  </body>
+  </html>
+

@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "QR for Current Page",
+  "version": "1.0.0",
+  "description": "Generate a QR code for the current tab URL.",
+  "action": {
+    "default_title": "Show QR Code",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab"]
+}
+
