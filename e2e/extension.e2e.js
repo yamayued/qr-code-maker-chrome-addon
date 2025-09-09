@@ -78,6 +78,33 @@ const fs = require('fs');
   }
   if (!ok) throw new Error('QR size did not increase as expected');
   console.log('[ok] Settings UI increased QR size to', w);
+
+  // Upload a red logo and assert center pixel turns red-ish
+  const logoPath = require('path').join(process.cwd(), 'assets', 'logo-red.svg');
+  await page.setInputFiles('#logoFile', logoPath);
+  await page.locator('#logoScale').fill('30');
+  await page.locator('#apply').click();
+  // Sample center pixel from final <img>
+  const centerRGB = await page.evaluate(() => {
+    const img = document.querySelector('#qr img');
+    const size = 300;
+    const c = document.createElement('canvas'); c.width = size; c.height = size;
+    const ctx = c.getContext('2d');
+    return new Promise((resolve) => {
+      if (!img) return resolve({r:0,g:0,b:0});
+      const i = new Image();
+      i.onload = () => {
+        ctx.drawImage(i, 0, 0, size, size);
+        const pixel = ctx.getImageData(Math.floor(size/2), Math.floor(size/2), 1, 1).data;
+        resolve({ r: pixel[0], g: pixel[1], b: pixel[2] });
+      };
+      i.src = img.src;
+    });
+  });
+  if (!(centerRGB.r > 150 && centerRGB.g < 100 && centerRGB.b < 100)) {
+    throw new Error('Center pixel not red after logo overlay: ' + JSON.stringify(centerRGB));
+  }
+  console.log('[ok] Center logo overlay detected via pixel:', centerRGB);
   console.log('[ok] Extension popup rendered with ID', extId);
   await context.close();
 })();
