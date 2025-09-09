@@ -7,7 +7,7 @@
     <style>
       body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 12px; width: 320px; }
       h1 { font-size: 16px; margin: 0 0 8px; }
-      #qr { display: grid; place-items: center; width: 260px; height: 260px; border: 1px solid #e3e3e3; border-radius: 8px; background: #fff; }
+      #qr { display: grid; place-items: center; border: 1px solid #e3e3e3; border-radius: 8px; background: #fff; }
       .row { display: flex; gap: 8px; margin-top: 10px; }
       input[type=text] { flex: 1 1 auto; padding: 6px 8px; font-size: 12px; border: 1px solid #ccc; border-radius: 6px; }
       button { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
@@ -22,6 +22,22 @@
       <input id="url" type="text" readonly />
       <button id="copy">Copy</button>
       <button id="download" title="Download QR as PNG">Download</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label for="size" style="font-size:12px">Size</label>
+      <select id="size">
+        <option value="180">180</option>
+        <option value="240" selected>240</option>
+        <option value="300">300</option>
+      </select>
+      <label for="ec" style="font-size:12px">EC</label>
+      <select id="ec">
+        <option value="L">L</option>
+        <option value="M" selected>M</option>
+        <option value="Q">Q</option>
+        <option value="H">H</option>
+      </select>
+      <button id="apply">Apply</button>
     </div>
     <footer>
       Tip: Show this on your phone by scanning the code.
