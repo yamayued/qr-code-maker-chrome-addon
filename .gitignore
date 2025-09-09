@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log*
+# package-lock.json
+
+# Playwright artifacts
+playwright-report/
+playwright/.cache/
+*.zip
+*.log
+
+# E2E screenshots
+/e2e/*.png
+
+# OS
+.DS_Store
+Thumbs.db
