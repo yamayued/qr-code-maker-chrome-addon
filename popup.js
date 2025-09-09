@@ -7,6 +7,9 @@ const qrBox = $('#qr');
 const urlInput = $('#url');
 const copyBtn = $('#copy');
 const downloadBtn = $('#download');
+const sizeSel = $('#size');
+const ecSel = $('#ec');
+const applyBtn = $('#apply');
 
 async function getActiveTabUrl() {
   // Test hook: if ?u=<url> is provided, prefer it (works in chrome-extension://, http(s) and file://)
@@ -20,17 +23,26 @@ async function getActiveTabUrl() {
   return '';
 }
 
-function renderQR(text) {
+function getECLevel(letter) {
+  // eslint-disable-next-line no-undef
+  const levels = QRCode.CorrectLevel;
+  return levels[letter] ?? levels.M;
+}
+
+function renderQR(text, opts = {}) {
   qrBox.innerHTML = '';
-  const size = 240; // px
+  const size = Number(opts.size || 240); // px
+  const ec = opts.ec || 'M';
   // QRCode is provided by qrcode.min.js (global)
   // eslint-disable-next-line no-undef
   new QRCode(qrBox, {
     text,
     width: size,
     height: size,
-    correctLevel: QRCode.CorrectLevel.M,
+    correctLevel: getECLevel(ec),
   });
+  qrBox.style.width = size + 'px';
+  qrBox.style.height = size + 'px';
 }
 
 async function main() {
@@ -40,7 +52,10 @@ async function main() {
     console.log('[popup] resolved url:', url);
     console.log('[popup] QRCode in window:', typeof window !== 'undefined' ? typeof window.QRCode : 'no-window');
     urlInput.value = url;
-    renderQR(url);
+    const saved = await loadSettings();
+    if (saved.size) sizeSel.value = String(saved.size);
+    if (saved.ec) ecSel.value = saved.ec;
+    renderQR(url, saved);
     console.log('[popup] renderQR done');
     qrBox.setAttribute('aria-busy', 'false');
   } catch (e) {
@@ -84,5 +99,37 @@ downloadBtn.addEventListener('click', async () => {
     console.error('Download failed', e);
   }
 });
+
+applyBtn.addEventListener('click', async () => {
+  const size = Number(sizeSel.value);
+  const ec = ecSel.value;
+  const settings = { size, ec };
+  try {
+    await saveSettings(settings);
+  } catch (e) {
+    console.warn('Failed to save settings', e);
+  }
+  renderQR(urlInput.value, settings);
+});
+
+function saveSettings(obj) {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.storage?.sync?.set(obj, () => resolve());
+    } catch (e) {
+      resolve(); // non-extension context; no-op
+    }
+  });
+}
+
+function loadSettings() {
+  return new Promise((resolve) => {
+    try {
+      chrome.storage?.sync?.get(['size', 'ec'], (res) => resolve(res || {}));
+    } catch (e) {
+      resolve({});
+    }
+  });
+}
 
 main();

@@ -65,6 +65,19 @@ const fs = require('fs');
   const size = require('fs').statSync(target).size;
   if (size < 1000) throw new Error('Downloaded PNG seems too small');
   console.log('[ok] Downloaded PNG:', target, size, 'bytes');
+
+  // Test: change size to 300 and re-render, then assert QR element grows
+  await page.locator('#size').selectOption('300');
+  await page.locator('#apply').click();
+  // Poll for size increase
+  let ok = false; let w = 0; const t0 = Date.now();
+  while (Date.now() - t0 < 2000) {
+    w = await page.evaluate(() => parseInt(getComputedStyle(document.querySelector('#qr')).width, 10));
+    if (w >= 280) { ok = true; break; }
+    await page.waitForTimeout(100);
+  }
+  if (!ok) throw new Error('QR size did not increase as expected');
+  console.log('[ok] Settings UI increased QR size to', w);
   console.log('[ok] Extension popup rendered with ID', extId);
   await context.close();
 })();
