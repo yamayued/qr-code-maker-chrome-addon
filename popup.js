@@ -198,4 +198,14 @@ function loadSettings() {
   });
 }
 
+// Live-preview scaling when moving the slider
+logoScaleInput.addEventListener('input', async () => {
+  if (!sessionLogoDataUrl) return;
+  await renderQR(urlInput.value, { size: Number(sizeSel.value), ec: ecSel.value, logoScale: Number(logoScaleInput.value || 20) });
+});
+logoScaleInput.addEventListener('change', async () => {
+  if (!sessionLogoDataUrl) return;
+  await renderQR(urlInput.value, { size: Number(sizeSel.value), ec: ecSel.value, logoScale: Number(logoScaleInput.value || 20) });
+});
+
 main();
