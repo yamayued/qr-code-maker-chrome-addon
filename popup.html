@@ -13,6 +13,9 @@
       button { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
       button:hover { background: #eef1f5; }
       input[type=file] { font-size: 12px; }
+      .presets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 8px; }
+      .preset { width: 40px; height: 40px; border: 1px solid #ddd; border-radius: 6px; padding: 4px; background: #fff; cursor: pointer; display: grid; place-items: center; }
+      .preset img, .preset svg { width: 100%; height: 100%; object-fit: contain; }
       .small { font-size: 12px; color: #555; }
       footer { color: #667; font-size: 11px; margin-top: 8px; }
     </style>
@@ -45,6 +48,16 @@
       <input id="logoFile" type="file" accept="image/*" />
       <label for="logoScale" class="small">Logo %</label>
       <input id="logoScale" type="range" min="0" max="40" step="1" value="20" style="flex:1" />
+    </div>
+    <div class="small">Presets</div>
+    <div class="presets" id="presets">
+      <button class="preset" aria-label="Blue Tile" title="Blue Tile" data-src="assets/presets/blue-square.svg"><img src="assets/presets/blue-square.svg"/></button>
+      <button class="preset" aria-label="Green Tile" title="Green Tile" data-src="assets/presets/green-square.svg"><img src="assets/presets/green-square.svg"/></button>
+      <button class="preset" aria-label="Purple Tile" title="Purple Tile" data-src="assets/presets/purple-square.svg"><img src="assets/presets/purple-square.svg"/></button>
+      <button class="preset" aria-label="GitHub" title="GitHub" data-src="assets/presets/github.svg"><img src="assets/presets/github.svg"/></button>
+      <button class="preset" aria-label="X" title="X" data-src="assets/presets/x.svg"><img src="assets/presets/x.svg"/></button>
+      <button class="preset" aria-label="Instagram" title="Instagram" data-src="assets/presets/instagram.svg"><img src="assets/presets/instagram.svg"/></button>
+      <button class="preset" aria-label="Facebook" title="Facebook" data-src="assets/presets/facebook.svg"><img src="assets/presets/facebook.svg"/></button>
     </div>
     <div class="small">Tip: Use EC=H and keep logo under ~20–30% for reliable scanning.</div>
     <footer>
