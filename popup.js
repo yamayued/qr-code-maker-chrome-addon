@@ -159,6 +159,16 @@ logoFile.addEventListener('change', async (ev) => {
   await renderQR(urlInput.value, { size: Number(sizeSel.value), ec: ecSel.value, logoScale: Number(logoScaleInput.value || 20) });
 });
 
+// Preset buttons
+document.getElementById('presets')?.addEventListener('click', async (e) => {
+  const t = e.target.closest('.preset');
+  if (!t) return;
+  const src = t.getAttribute('data-src');
+  if (!src) return;
+  sessionLogoDataUrl = src; // extension resource path works for Image()
+  await renderQR(urlInput.value, { size: Number(sizeSel.value), ec: ecSel.value, logoScale: Number(logoScaleInput.value || 20) });
+});
+
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
