@@ -27,3 +27,9 @@ No build step or dependencies. The extension ships a small bundled QR generator 
 ### License Notice
 
 This repository includes `qrcode.min.js` by Kazuhiko Arase under the MIT License. Source: https://github.com/kazuhikoarase/qrcode-generator.
+
+
+## Developer / 開発・運営元
+
+- 開発・運営: [株式会社こころび（Cocorobi Inc.）公式サイト](https://cocorobi.co.jp)
+- 提供ソリューション: 紹介AIエージェント、営業支援DXソリューション
